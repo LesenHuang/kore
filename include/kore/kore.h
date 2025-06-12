@@ -399,6 +399,7 @@ LIST_HEAD(kore_server_list, kore_server);
 struct kore_auth {
 	u_int8_t		type;
 	char			*name;
+	char			*text;
 	char			*value;
 	char			*redirect;
 	struct kore_validator	*validator;

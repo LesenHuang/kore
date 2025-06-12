@@ -40,6 +40,7 @@ kore_auth_new(const char *name)
 
 	auth = kore_malloc(sizeof(*auth));
 	auth->type = 0;
+	auth->text = NULL;
 	auth->value = NULL;
 	auth->redirect = NULL;
 	auth->validator = NULL;
@@ -85,12 +86,12 @@ kore_auth_run(struct http_request *req, struct kore_auth *auth)
 		return (r);
 
 	if (auth->redirect == NULL) {
-		http_response(req, HTTP_STATUS_FORBIDDEN, NULL, 0);
+		http_response(req, HTTP_STATUS_FORBIDDEN, TEXTSL(auth->text));
 		return (KORE_RESULT_ERROR);
 	}
 
 	http_response_header(req, "location", auth->redirect);
-	http_response(req, HTTP_STATUS_FOUND, NULL, 0);
+	http_response(req, HTTP_STATUS_FOUND, TEXTSL(auth->text));
 
 	return (KORE_RESULT_ERROR);
 }

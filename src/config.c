@@ -142,6 +142,7 @@ static int		configure_validate(char *);
 static int		configure_authentication(char *);
 static int		configure_authentication_uri(char *);
 static int		configure_authentication_type(char *);
+static int		configure_authentication_text(char *);
 static int		configure_authentication_value(char *);
 static int		configure_authentication_validator(char *);
 static int		configure_websocket_maxframe(char *);
@@ -217,6 +218,7 @@ static struct {
 	{ "authentication",		configure_authentication },
 	{ "authentication_uri",		configure_authentication_uri },
 	{ "authentication_type",	configure_authentication_type },
+	{ "authentication_text",	configure_authentication_text },
 	{ "authentication_value",	configure_authentication_value },
 	{ "authentication_validator",	configure_authentication_validator },
 #endif
@@ -1753,6 +1755,22 @@ configure_authentication_type(char *option)
 		kore_log(LOG_ERR, "unknown authentication type '%s'", option);
 		return (KORE_RESULT_ERROR);
 	}
+
+	return (KORE_RESULT_OK);
+}
+
+static int
+configure_authentication_text(char *option)
+{
+	if (current_auth == NULL) {
+		kore_log(LOG_ERR,
+		    "authentication_text keyword not in correct context");
+		return (KORE_RESULT_ERROR);
+	}
+
+	if (current_auth->text != NULL)
+		kore_free(current_auth->value);
+	current_auth->text = kore_strdup(option);
 
 	return (KORE_RESULT_OK);
 }

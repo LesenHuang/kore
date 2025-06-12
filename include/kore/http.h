@@ -110,6 +110,9 @@ struct http_arg {
 	TAILQ_ENTRY(http_arg)	list;
 };
 
+#define STRLEN(x)               strlen(x?x:"")
+#define TEXTSL(x)               x, STRLEN(x)
+
 #define COPY_ARG_TYPE(v, t)				\
 	do {						\
 		*(t *)nout = v;				\
